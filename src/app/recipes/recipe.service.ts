@@ -8,28 +8,34 @@ import { Recipe } from './recipe.model';
 export class RecipeService {
   recipesChanged = new Subject<Recipe[]>();
 
-  private recipes: Recipe[] = [
-    new Recipe(
-      'Spinach',
-      'Cooking spinach is very easy: do the following...',
-      'https://www.farmflavor.com/wp-content/uploads/2020/05/iStock-916931074-2-scaled.jpg',
-      [
-        new Ingredient('Spinach', 1),
-        new Ingredient('Onion', 3)
-      ]
-    ),
-    new Recipe(
-      'Lasagne',
-      'Preparing lasagne is not that easy, but you can always try! Good luck!',
-      'https://thestayathomechef.com/wp-content/uploads/2017/08/Most-Amazing-Lasagna-2-e1574792735811.jpg',
-      [
-        new Ingredient('Meat', 50),
-        new Ingredient('Pasta', 100)
-      ]
-    ),
-  ];
+  // private recipes: Recipe[] = [
+  //   new Recipe(
+  //     'Spinach',
+  //     'Cooking spinach is very easy: do the following...',
+  //     'https://www.farmflavor.com/wp-content/uploads/2020/05/iStock-916931074-2-scaled.jpg',
+  //     [
+  //       new Ingredient('Spinach', 1),
+  //       new Ingredient('Onion', 3)
+  //     ]
+  //   ),
+  //   new Recipe(
+  //     'Lasagne',
+  //     'Preparing lasagne is not that easy, but you can always try! Good luck!',
+  //     'https://thestayathomechef.com/wp-content/uploads/2017/08/Most-Amazing-Lasagna-2-e1574792735811.jpg',
+  //     [
+  //       new Ingredient('Meat', 50),
+  //       new Ingredient('Pasta', 100)
+  //     ]
+  //   ),
+  // ];
+  private recipes: Recipe[] = [];
 
   constructor(private shoppingListService: ShoppingListService) {}
+
+  setRecipes(recipes: Recipe[]) {
+    this.recipes = recipes;
+    this.recipesChanged.next(this.recipes.slice());
+  }
 
   getRecipes() {
     return this.recipes.slice();
