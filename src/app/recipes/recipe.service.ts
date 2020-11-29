@@ -1,36 +1,19 @@
 import { Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { Ingredient } from '../shared/ingredient.model';
-import { ShoppingListService } from '../shopping-list/shopping-list.service';
+import * as ShoppingListActions from '../shopping-list/store/shopping-list.actions';
+import * as fromShoppingList from '../shopping-list/store/shopping-list.reducer';
 import { Recipe } from './recipe.model';
 
 @Injectable()
 export class RecipeService {
   recipesChanged = new Subject<Recipe[]>();
-
-  // private recipes: Recipe[] = [
-  //   new Recipe(
-  //     'Spinach',
-  //     'Cooking spinach is very easy: do the following...',
-  //     'https://www.farmflavor.com/wp-content/uploads/2020/05/iStock-916931074-2-scaled.jpg',
-  //     [
-  //       new Ingredient('Spinach', 1),
-  //       new Ingredient('Onion', 3)
-  //     ]
-  //   ),
-  //   new Recipe(
-  //     'Lasagne',
-  //     'Preparing lasagne is not that easy, but you can always try! Good luck!',
-  //     'https://thestayathomechef.com/wp-content/uploads/2017/08/Most-Amazing-Lasagna-2-e1574792735811.jpg',
-  //     [
-  //       new Ingredient('Meat', 50),
-  //       new Ingredient('Pasta', 100)
-  //     ]
-  //   ),
-  // ];
   private recipes: Recipe[] = [];
 
-  constructor(private shoppingListService: ShoppingListService) {}
+  constructor(
+    private store: Store<fromShoppingList.AppState>
+  ) {}
 
   setRecipes(recipes: Recipe[]) {
     this.recipes = recipes;
@@ -46,7 +29,7 @@ export class RecipeService {
   }
 
   addIngredientsToShoppingList(ingredients: Ingredient[]) {
-    this.shoppingListService.addIngredients(ingredients);
+    this.store.dispatch(new ShoppingListActions.AddIngredients(ingredients));
   }
 
   addRecipe(recipe: Recipe) {
